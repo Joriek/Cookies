@@ -1,9 +1,42 @@
 <?php 
-$name = "";
+session_start();
+require_once("html.php");
+$name ="";
+$start = "nee";
+$test = "blabla";
+
+if(isset($_POST["delete"])){
+		$name = "";
+		$start = "nee";
+		$test = "omgjermlgjzemljmlkjmlrjgmlezrjg";
+		setcookie("name", "", strtotime("-1 year"));
+		if(isset($_SESSION['start'])){
+  			$_SESSION['start']= "nee";
+  			}
+	}
+
 if(isset($_POST["name"])){
 	setcookie("name" , ($_POST["name"]));
+	$_SESSION['start']= "ja";
 	$name = $_POST["name"];
-}
+	}
+
+if(isset($_COOKIE["name"])){
+ 		$name = $_COOKIE["name"];
+ 	}
+
+$content = new Div(
+				new Heading("$test").
+				new Heading("Session gestart? ==> ". $_SESSION['start']).
+				new Heading("Welkom ". $name).
+				new Form(
+				new Input("name", "text", array("class" => "form-control")) .
+				new Button("Login", array("class" => "btn btn-lg btn-primary btn-block", "type" => "submit")).
+				new Button("Delete",  array("class" => "btn btn-lg btn-primary btn-block", "type" => "submit"))
+				, array("class" => "form-signin", "method" => "post", "value" => "delete")
+
+			), array("class" => "container")
+		);	
 
  ?>
 
@@ -14,24 +47,6 @@ if(isset($_POST["name"])){
  </head>
  <body>
 
- <?php 
-	if(isset($_POST["delete"])){
-		$name = "";
-		setcookie("name", "", strtotime("-1 year"));
-	}
-
- if(isset($_COOKIE["name"]) && $_COOKIE["name"] == ("test")){
-	 
-	} else {
- ?>
- 	<form method="post">
- 		<input type="name" name="name">
- 		<input type="submit">
- 		<input type="submit" name="delete" value="Destroy">
- 	</form>	
- 	<h1><?php  echo $name; ?></h1>
- 	<?php 
- 		}
-  ?>
+ 	<?= $content ?>
  </body>
  </html>
